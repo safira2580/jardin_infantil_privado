@@ -1,18 +1,18 @@
-# Jardín Infantil Semillitas - Semana 02: Listas, inputs y estilos
+# Jardín Infantil Semillitas - Semana 03: React Navigation 7
 
 Bootcamp React Native (bc-reactnative) - Dominio: **Jardín infantil privado** (grupos y material didáctico).
 
 ## Qué incluye esta semana
-- Todo lo de la semana 1.
-- Lista de **Grupos** con `FlatList` y filtros por estado.
-- Lista de **Material didáctico** con búsqueda (`TextInput`), chips de categoría, `Switch` "solo con existencias", `RefreshControl` y estado vacío.
-- **Formulario** para agregar material con teclados numéricos y validación.
-- Estado compartido con `MaterialsContext`.
+- Todo lo de las semanas 1 y 2.
+- **Bottom Tabs** (Inicio, Grupos, Material, Contacto) con **Native Stack** anidado en Grupos y Material.
+- Detalle de grupo y de material con **parámetros tipados** (`grupoId`, `materialId`).
+- Navegación cruzada: desde un grupo al material que usa, y desde un material a los grupos que lo usan.
+- Formulario de nuevo material como pantalla **modal**.
 
 ## Archivos principales
-- `src/screens/GruposListScreen.tsx`, `MaterialesListScreen.tsx`, `MaterialFormScreen.tsx`
-- `src/components/` (Chip, SearchInput, FormField, EmptyState, MaterialCard)
-- `src/context/MaterialsContext.tsx`
+- `src/navigation/` (RootTabs, GruposStack, MaterialesStack)
+- `src/types/navigation.ts` (tipos de rutas)
+- `src/screens/GrupoDetailScreen.tsx`, `MaterialDetailScreen.tsx`
 
 ## Cómo ejecutarlo
 ```bash
@@ -21,5 +21,19 @@ npx expo install --fix
 npx expo start
 ```
 
+## Mapa de navegación
+```
+RootTabs (Bottom Tabs)
+├── InicioTab       -> HomeScreen
+├── GruposTab       -> GruposStack
+│     ├── GruposList
+│     └── GrupoDetail     { grupoId: string }
+├── MaterialesTab   -> MaterialesStack
+│     ├── MaterialesList
+│     ├── MaterialDetail  { materialId: string }
+│     └── MaterialForm    (modal)
+└── ContactoTab     -> ContactoScreen
+```
+
 ## Siguiente semana
-Semana 3: React Navigation 7 (tabs + stacks), detalle con parámetros tipados.
+Semana 4: estado global con Zustand.

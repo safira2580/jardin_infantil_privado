@@ -7,6 +7,7 @@ import GrupoCard from '../components/GrupoCard';
 import { GRUPOS } from '../data/grupos';
 import { colors, spacing } from '../theme';
 import type { EstadoGrupo } from '../types/models';
+import type { GruposStackScreenProps } from '../types/navigation';
 
 type Filtro = 'todas' | EstadoGrupo;
 
@@ -17,7 +18,7 @@ const FILTROS: { value: Filtro; label: string }[] = [
   { value: 'completo', label: 'Completos' },
 ];
 
-export default function GruposListScreen() {
+export default function GruposListScreen({ navigation }: GruposStackScreenProps<'GruposList'>) {
   const [filtro, setFiltro] = useState<Filtro>('todas');
 
   const data = useMemo(() => (filtro === 'todas' ? GRUPOS : GRUPOS.filter((o) => o.estado === filtro)), [filtro]);
@@ -34,7 +35,9 @@ export default function GruposListScreen() {
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <GrupoCard grupo={item} />}
+        renderItem={({ item }) => (
+          <GrupoCard grupo={item} onPress={() => navigation.navigate('GrupoDetail', { grupoId: item.id })} />
+        )}
         ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
         contentContainerStyle={styles.list}
         ListEmptyComponent={
