@@ -1,18 +1,18 @@
-# Jardín Infantil Semillitas - Semana 01: Core Components y Flexbox
+# Jardín Infantil Semillitas - Semana 02: Listas, inputs y estilos
 
 Bootcamp React Native (bc-reactnative) - Dominio: **Jardín infantil privado** (grupos y material didáctico).
 
 ## Qué incluye esta semana
-- Pantalla de **Inicio**: imagen de portada, tarjetas de estadísticas, grupos en clases y material por reponer.
-- Pantalla de **Contacto**: datos del jardín con enlaces (`Linking`).
-- `View`, `Text`, `Image`, `ScrollView`, `Pressable`, `StyleSheet` y Flexbox (`flexDirection`, `flex`, `gap`, `flexWrap`, `justifyContent`, `alignItems`).
-- Cambio de pantalla con estado local (`useState`) y una barra inferior simple.
+- Todo lo de la semana 1.
+- Lista de **Grupos** con `FlatList` y filtros por estado.
+- Lista de **Material didáctico** con búsqueda (`TextInput`), chips de categoría, `Switch` "solo con existencias", `RefreshControl` y estado vacío.
+- **Formulario** para agregar material con teclados numéricos y validación.
+- Estado compartido con `MaterialsContext`.
 
 ## Archivos principales
-- `App.tsx`
-- `src/screens/HomeScreen.tsx`, `src/screens/ContactoScreen.tsx`
-- `src/components/` (StatCard, Badge, ProgressBar, GrupoCard, SimpleTabBar)
-- `src/data/` (grupos y material didáctico de ejemplo)
+- `src/screens/GruposListScreen.tsx`, `MaterialesListScreen.tsx`, `MaterialFormScreen.tsx`
+- `src/components/` (Chip, SearchInput, FormField, EmptyState, MaterialCard)
+- `src/context/MaterialsContext.tsx`
 
 ## Cómo ejecutarlo
 ```bash
@@ -22,4 +22,4 @@ npx expo start
 ```
 
 ## Siguiente semana
-Semana 2: listas con `FlatList`, inputs, filtros y formulario.
+Semana 3: React Navigation 7 (tabs + stacks), detalle con parámetros tipados.

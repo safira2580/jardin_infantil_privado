@@ -2,13 +2,13 @@
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import GrupoCard from '../components/GrupoCard';
 import StatCard from '../components/StatCard';
-import { MATERIALS } from '../data/materials';
+import { useMaterials } from '../context/MaterialsContext';
 import { GRUPOS } from '../data/grupos';
 import { colors, font, radius, spacing } from '../theme';
 import { formatCOP } from '../utils/format';
 
 export default function HomeScreen() {
-  const materials = MATERIALS;
+  const { materials } = useMaterials();
 
   const gruposEnCurso = GRUPOS.filter((o) => o.estado === 'activo');
   const stockBajo = materials.filter((m) => m.stock <= m.minStock);
