@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors, font, radius, spacing } from '../theme';
+import { blockCard, blocks, colors, font, lookDeGrupo, pressedBlock, radius, spacing } from '../theme';
 import type { Grupo } from '../types/models';
 import { ocupacionDe } from '../utils/format';
 import Badge from './Badge';
@@ -11,35 +11,44 @@ interface Props {
 }
 
 export default function GrupoCard({ grupo, onPress }: Props) {
+  const look = lookDeGrupo(grupo.id);
+  const c = blocks[look.tone];
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={`Grupo ${grupo.nombre}, ocupación ${ocupacionDe(grupo)} por ciento`}
-      style={({ pressed }) => [styles.card, pressed && styles.pressed]}
+      style={({ pressed }) => [styles.card, pressed && pressedBlock]}
     >
-      <View style={styles.row}>
-        <Text style={styles.title} numberOfLines={2}>{grupo.nombre}</Text>
-        <Badge estado={grupo.estado} />
+      <View style={styles.top}>
+        <View style={[styles.tile, { backgroundColor: c.main, borderBottomColor: c.dark }]}>
+          <Text style={styles.emoji}>{look.emoji}</Text>
+        </View>
+        <View style={styles.info}>
+          <Text style={styles.title} numberOfLines={1}>{grupo.nombre}</Text>
+          <Text style={styles.meta} numberOfLines={1}>{grupo.edad} · {grupo.salon}</Text>
+          <Badge estado={grupo.estado} />
+        </View>
       </View>
-      <Text style={styles.meta}>{grupo.edad}, {grupo.salon}</Text>
       <View style={styles.progressRow}>
         <View style={styles.progressBar}>
-          <ProgressBar value={ocupacionDe(grupo)} />
+          <ProgressBar value={ocupacionDe(grupo)} color={c.main} />
         </View>
-        <Text style={styles.pct}>{ocupacionDe(grupo)}%</Text>
+        <Text style={styles.pct}>{grupo.matriculados}/{grupo.cupos}</Text>
       </View>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.lg, gap: spacing.sm },
-  pressed: { opacity: 0.85 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: spacing.md },
-  title: { flex: 1, fontSize: font.lg, fontWeight: '700', color: colors.ink },
-  meta: { fontSize: font.md, color: colors.muted },
+  card: { ...blockCard, padding: spacing.lg, gap: spacing.md },
+  top: { flexDirection: 'row', gap: spacing.md, alignItems: 'center' },
+  tile: { width: 64, height: 64, borderRadius: radius.md, borderBottomWidth: 5, alignItems: 'center', justifyContent: 'center' },
+  emoji: { fontSize: 30 },
+  info: { flex: 1, gap: 4 },
+  title: { fontSize: font.lg, fontWeight: '800', color: colors.ink },
+  meta: { fontSize: font.sm, color: colors.muted },
   progressRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   progressBar: { flex: 1 },
-  pct: { fontSize: font.sm, fontWeight: '700', color: colors.ink, width: 40, textAlign: 'right' },
+  pct: { fontSize: font.sm, fontWeight: '800', color: colors.ink, minWidth: 44, textAlign: 'right' },
 });
