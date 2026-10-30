@@ -11,7 +11,7 @@ interface Props {
 export default function SearchInput({ value, onChangeText, placeholder = 'Buscar' }: Props) {
   return (
     <View style={styles.box}>
-      <Ionicons name="search" size={18} color={colors.muted} />
+      <Ionicons name="search" size={20} color={colors.sky} />
       <TextInput
         value={value}
         onChangeText={onChangeText}
@@ -25,7 +25,7 @@ export default function SearchInput({ value, onChangeText, placeholder = 'Buscar
       />
       {value.length > 0 && (
         <Pressable onPress={() => onChangeText('')} accessibilityLabel="Borrar búsqueda" hitSlop={8}>
-          <Ionicons name="close-circle" size={18} color={colors.muted} />
+          <Ionicons name="close-circle" size={20} color={colors.muted} />
         </Pressable>
       )}
     </View>
@@ -38,10 +38,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.sm,
     backgroundColor: colors.surface,
-    borderRadius: radius.md,
-    borderWidth: 1,
+    borderRadius: radius.pill,
+    borderWidth: 2,
+    borderBottomWidth: 4,
     borderColor: colors.line,
-    paddingHorizontal: spacing.md,
+    paddingHorizontal: spacing.lg,
   },
   input: { flex: 1, paddingVertical: spacing.md, fontSize: font.md, color: colors.ink },
 });
