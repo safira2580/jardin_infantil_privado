@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { colors, font, spacing } from '../theme';
+import { blocks, colors, font, radius, spacing } from '../theme';
 
 interface Props {
   label: string;
@@ -24,12 +24,13 @@ const styles = StyleSheet.create({
   chip: {
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
-    borderRadius: 999,
+    borderRadius: radius.pill,
     backgroundColor: colors.surface,
-    borderWidth: 1,
+    borderWidth: 2,
+    borderBottomWidth: 4,
     borderColor: colors.line,
   },
-  chipSelected: { backgroundColor: colors.ink, borderColor: colors.ink },
-  text: { fontSize: font.sm, color: colors.ink, fontWeight: '600' },
+  chipSelected: { backgroundColor: blocks.blue.main, borderColor: blocks.blue.dark },
+  text: { fontSize: font.sm, color: colors.ink, fontWeight: '700' },
   textSelected: { color: colors.surface },
 });
