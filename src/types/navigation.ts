@@ -7,6 +7,11 @@ export type GruposStackParamList = {
   GrupoDetail: { grupoId: string };
 };
 
+export type NinosStackParamList = {
+  NinosList: undefined;
+  NinoDetail: { ninoId: string };
+};
+
 export type MaterialesStackParamList = {
   MaterialesList: undefined;
   MaterialDetail: { materialId: string };
@@ -16,6 +21,7 @@ export type MaterialesStackParamList = {
 export type RootTabParamList = {
   InicioTab: undefined;
   GruposTab: NavigatorScreenParams<GruposStackParamList>;
+  NinosTab: NavigatorScreenParams<NinosStackParamList>;
   MaterialesTab: NavigatorScreenParams<MaterialesStackParamList>;
   ContactoTab: undefined;
 };
@@ -24,6 +30,11 @@ export type RootTabScreenProps<T extends keyof RootTabParamList> = BottomTabScre
 
 export type GruposStackScreenProps<T extends keyof GruposStackParamList> = CompositeScreenProps<
   NativeStackScreenProps<GruposStackParamList, T>,
+  BottomTabScreenProps<RootTabParamList>
+>;
+
+export type NinosStackScreenProps<T extends keyof NinosStackParamList> = CompositeScreenProps<
+  NativeStackScreenProps<NinosStackParamList, T>,
   BottomTabScreenProps<RootTabParamList>
 >;
 
