@@ -1,3 +1,5 @@
+import type { ImageSourcePropType } from 'react-native';
+
 export type Categoria =
   | 'Arte y manualidades'
   | 'Juegos y motricidad'
@@ -33,4 +35,19 @@ export interface Grupo {
   fechaInicio: string; // ISO yyyy-mm-dd
   descripcion: string;
   materialIds: string[];
+}
+
+export type Asistencia = 'presente' | 'ausente' | 'pendiente';
+
+export interface Nino {
+  id: string;
+  nombre: string;
+  apellido: string;
+  fechaNacimiento: string; // ISO yyyy-mm-dd
+  grupoId: string;
+  acudiente: string;
+  telefono: string; // solo dígitos con indicativo
+  asistencia: Asistencia;
+  nota?: string;
+  foto?: ImageSourcePropType; // opcional: si falta, se muestra la inicial
 }
