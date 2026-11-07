@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: spacing.xxl },
   hero: { borderBottomLeftRadius: 32, borderBottomRightRadius: 32, overflow: 'hidden' },
-  heroImage: { ...StyleSheet.absoluteFillObject, width: '100%', height: '100%' },
+  heroImage: { ...StyleSheet.absoluteFill, width: '100%', height: '100%' },
   welcome: { ...blockCard, marginHorizontal: spacing.lg, marginTop: -36, padding: spacing.lg, gap: 2 },
   title: { fontSize: font.xl, fontWeight: '800', color: colors.ink },
   date: { fontSize: font.md, color: colors.muted },
