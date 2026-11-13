@@ -18,11 +18,18 @@ export type MaterialesStackParamList = {
   MaterialForm: undefined;
 };
 
+export type AvisosStackParamList = {
+  AvisosList: undefined;
+  AvisoDetail: { avisoId: number };
+  AvisoForm: undefined;
+};
+
 export type RootTabParamList = {
   InicioTab: undefined;
   GruposTab: NavigatorScreenParams<GruposStackParamList>;
   NinosTab: NavigatorScreenParams<NinosStackParamList>;
   MaterialesTab: NavigatorScreenParams<MaterialesStackParamList>;
+  AvisosTab: NavigatorScreenParams<AvisosStackParamList>;
   ContactoTab: undefined;
 };
 
@@ -40,5 +47,10 @@ export type MaterialesStackScreenProps<T extends keyof MaterialesStackParamList>
 
 export type NinosStackScreenProps<T extends keyof NinosStackParamList> = CompositeScreenProps<
   NativeStackScreenProps<NinosStackParamList, T>,
+  BottomTabScreenProps<RootTabParamList>
+>;
+
+export type AvisosStackScreenProps<T extends keyof AvisosStackParamList> = CompositeScreenProps<
+  NativeStackScreenProps<AvisosStackParamList, T>,
   BottomTabScreenProps<RootTabParamList>
 >;

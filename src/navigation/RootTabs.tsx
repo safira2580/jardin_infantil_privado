@@ -4,6 +4,7 @@ import ContactoScreen from '../screens/ContactoScreen';
 import HomeScreen from '../screens/HomeScreen';
 import { blocks, colors } from '../theme';
 import type { RootTabParamList } from '../types/navigation';
+import AvisosStack from './AvisosStack';
 import GruposStack from './GruposStack';
 import MaterialesStack from './MaterialesStack';
 import NinosStack from './NinosStack';
@@ -17,6 +18,7 @@ const ICONS: Record<keyof RootTabParamList, { active: IconName; inactive: IconNa
   GruposTab: { active: 'people', inactive: 'people-outline' },
   NinosTab: { active: 'happy', inactive: 'happy-outline' },
   MaterialesTab: { active: 'color-palette', inactive: 'color-palette-outline' },
+  AvisosTab: { active: 'megaphone', inactive: 'megaphone-outline' },
   ContactoTab: { active: 'call', inactive: 'call-outline' },
 };
 
@@ -38,6 +40,7 @@ export default function RootTabs() {
       <Tab.Screen name="GruposTab" component={GruposStack} options={{ title: 'Grupos' }} />
       <Tab.Screen name="NinosTab" component={NinosStack} options={{ title: 'Niños' }} />
       <Tab.Screen name="MaterialesTab" component={MaterialesStack} options={{ title: 'Material' }} />
+      <Tab.Screen name="AvisosTab" component={AvisosStack} options={{ title: 'Avisos' }} />
       <Tab.Screen
         name="ContactoTab"
         component={ContactoScreen}
