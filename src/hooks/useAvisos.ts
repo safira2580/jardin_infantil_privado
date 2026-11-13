@@ -30,6 +30,7 @@ export function useCreateAviso() {
       // JSONPlaceholder responde siempre id 101: se usa un id único para la UI
       const nuevo: Aviso = { ...creado, id: Date.now() };
       queryClient.setQueryData<Aviso[]>(avisosKeys.all, (prev) => [nuevo, ...(prev ?? [])]);
+      // refetchType 'none': JSONPlaceholder no persiste cambios; con un backend real se quita.
       queryClient.invalidateQueries({ queryKey: avisosKeys.all, refetchType: 'none' });
     },
   });
@@ -44,6 +45,7 @@ export function useDeleteAviso() {
         (prev ?? []).filter((a) => a.id !== id),
       );
       queryClient.removeQueries({ queryKey: avisosKeys.detail(id) });
+      // refetchType 'none': JSONPlaceholder no persiste cambios; con un backend real se quita.
       queryClient.invalidateQueries({ queryKey: avisosKeys.all, refetchType: 'none' });
     },
   });
