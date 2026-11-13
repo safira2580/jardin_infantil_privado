@@ -2,6 +2,10 @@ import { create } from 'zustand';
 import { MATERIALS } from '../data/materials';
 import type { Material } from '../types/models';
 
+/** Valores por defecto de todo material nuevo creado desde el formulario. */
+export const DEFAULT_MATERIAL_EMOJI = '📦';
+export const DEFAULT_MIN_STOCK = 10;
+
 type NuevoMaterial = Omit<Material, 'id' | 'emoji' | 'minStock'>;
 
 interface MaterialsState {
@@ -14,12 +18,19 @@ interface MaterialsState {
 export const useMaterialsStore = create<MaterialsState>((set) => ({
   materials: MATERIALS,
   addMaterial: (data) => {
-    const nuevo: Material = { ...data, id: `mat-${Date.now()}`, emoji: '📦', minStock: 10 };
+    const nuevo: Material = {
+      ...data,
+      id: `mat-${Date.now()}`,
+      emoji: DEFAULT_MATERIAL_EMOJI,
+      minStock: DEFAULT_MIN_STOCK,
+    };
     set((state) => ({ materials: [nuevo, ...state.materials] }));
     return nuevo;
   },
   ajustarStock: (id, delta) =>
     set((state) => ({
-      materials: state.materials.map((m) => (m.id === id ? { ...m, stock: Math.max(0, m.stock + delta) } : m)),
+      materials: state.materials.map((m) =>
+        m.id === id ? { ...m, stock: Math.max(0, m.stock + delta) } : m,
+      ),
     })),
 }));

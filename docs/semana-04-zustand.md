@@ -41,3 +41,9 @@ Proyecto: Jardín Infantil Semillitas (dominio: jardín infantil privado).
 
 ## Pendiente (semanas siguientes)
 - Persistir los stores en el dispositivo (middleware `persist`), normalmente con la semana de almacenamiento local.
+
+## Decisiones de estado
+
+- **Grupos:** datos estáticos en `src/data/grupos.ts`. La app no crea, edita ni elimina grupos, por eso no tienen store.
+- **Materiales, niños y favoritos:** viven en Zustand (`useMaterialsStore`, `useNinosStore`, `useFavoritosStore`).
+- **Materiales nuevos:** `addMaterial` les asigna el emoji `📦` y un stock mínimo de `10` por defecto (`DEFAULT_MATERIAL_EMOJI` y `DEFAULT_MIN_STOCK`).
