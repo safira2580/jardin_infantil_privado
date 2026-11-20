@@ -13,6 +13,7 @@ export const colors = {
   warn: '#D9534F',
 };
 
+/** Los cuatro colores de los cubos de la imagen de inicio. */
 export type BlockKey = 'coral' | 'sun' | 'blue' | 'green';
 
 export const blocks: Record<BlockKey, { main: string; dark: string; tint: string; onMain: string }> = {
@@ -22,6 +23,7 @@ export const blocks: Record<BlockKey, { main: string; dark: string; tint: string
   green: { main: '#2E8B63', dark: '#1F6847', tint: '#D8EEE3', onMain: '#FFFFFF' },
 };
 
+/** Color e ícono de cada grupo (por id). */
 const GRUPO_LOOK: Record<string, { tone: BlockKey; emoji: string }> = {
   'grupo-01': { tone: 'coral', emoji: '🍼' },
   'grupo-02': { tone: 'sun', emoji: '👣' },
@@ -39,6 +41,7 @@ export const spacing = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32 };
 export const radius = { sm: 10, md: 16, lg: 24, pill: 999 };
 export const font = { sm: 13, md: 15, lg: 18, xl: 24, xxl: 30 };
 
+/** Ficha blanca con borde inferior grueso, como un cubo de juguete. */
 export const blockCard: ViewStyle = {
   backgroundColor: colors.surface,
   borderRadius: radius.lg,
@@ -47,4 +50,5 @@ export const blockCard: ViewStyle = {
   borderBottomWidth: 5,
 };
 
+/** Estilo de "presionado": el cubo se hunde un poco. */
 export const pressedBlock: ViewStyle = { transform: [{ translateY: 2 }], opacity: 0.95 };

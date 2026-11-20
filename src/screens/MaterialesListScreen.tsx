@@ -5,19 +5,22 @@ import Chip from '../components/Chip';
 import EmptyState from '../components/EmptyState';
 import MaterialCard from '../components/MaterialCard';
 import SearchInput from '../components/SearchInput';
-import { useMaterials } from '../context/MaterialsContext';
 import { CATEGORIAS } from '../data/materials';
-import { colors, font, spacing } from '../theme';
+import { useFavoritosStore } from '../store/useFavoritosStore';
+import { useMaterialsStore } from '../store/useMaterialsStore';
+import { blocks, colors, font, spacing } from '../theme';
 import type { Categoria } from '../types/models';
 import type { MaterialesStackScreenProps } from '../types/navigation';
 
 type Filtro = 'Todos' | Categoria;
 
 export default function MaterialesListScreen({ navigation }: MaterialesStackScreenProps<'MaterialesList'>) {
-  const { materials } = useMaterials();
+  const materials = useMaterialsStore((s) => s.materials);
+  const favoritos = useFavoritosStore((s) => s.materialIds);
   const [query, setQuery] = useState('');
   const [categoria, setCategoria] = useState<Filtro>('Todos');
   const [soloDisponibles, setSoloDisponibles] = useState(false);
+  const [soloFavoritos, setSoloFavoritos] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
   const data = useMemo(() => {
@@ -25,10 +28,11 @@ export default function MaterialesListScreen({ navigation }: MaterialesStackScre
     return materials.filter((m) => {
       if (categoria !== 'Todos' && m.category !== categoria) return false;
       if (soloDisponibles && m.stock === 0) return false;
+      if (soloFavoritos && !favoritos.includes(m.id)) return false;
       if (q && !m.name.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [materials, query, categoria, soloDisponibles]);
+  }, [materials, favoritos, query, categoria, soloDisponibles, soloFavoritos]);
 
   // Simula una recarga (en semanas siguientes será una petición real a la API)
   const onRefresh = useCallback(() => {
@@ -50,7 +54,16 @@ export default function MaterialesListScreen({ navigation }: MaterialesStackScre
           <Switch
             value={soloDisponibles}
             onValueChange={setSoloDisponibles}
-            trackColor={{ false: colors.line, true: colors.accent }}
+            trackColor={{ false: colors.line, true: blocks.green.main }}
+            thumbColor={colors.surface}
+          />
+        </View>
+        <View style={styles.switchRow}>
+          <Text style={styles.switchLabel}>Solo favoritos</Text>
+          <Switch
+            value={soloFavoritos}
+            onValueChange={setSoloFavoritos}
+            trackColor={{ false: colors.line, true: blocks.coral.main }}
             thumbColor={colors.surface}
           />
         </View>
@@ -82,6 +95,6 @@ const styles = StyleSheet.create({
   filters: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.md },
   chips: { gap: spacing.sm },
   switchRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  switchLabel: { fontSize: font.md, color: colors.ink },
+  switchLabel: { fontSize: font.md, color: colors.ink, fontWeight: '600' },
   list: { padding: spacing.lg, paddingBottom: spacing.xxl, flexGrow: 1 },
 });

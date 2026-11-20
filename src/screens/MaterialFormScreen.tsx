@@ -1,56 +1,36 @@
 // SEMANA 2: inputs controlados, teclados numéricos y validación manual.
 // SEMANA 3: se presenta como pantalla modal dentro del Stack de Materiales.
-import { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+// SEMANA 6: React Hook Form + Zod reemplazan los useState y la validación manual.
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Controller, useForm } from 'react-hook-form';
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Chip from '../components/Chip';
 import FormField from '../components/FormField';
-import { useMaterials } from '../context/MaterialsContext';
+import SubmitButton from '../components/SubmitButton';
 import { CATEGORIAS } from '../data/materials';
-import { colors, font, radius, spacing } from '../theme';
-import type { Categoria } from '../types/models';
+import { materialSchema, type MaterialFormData, type MaterialFormInput } from '../schemas/materialSchema';
+import { useMaterialsStore } from '../store/useMaterialsStore';
+import { colors, font, spacing } from '../theme';
 import type { MaterialesStackScreenProps } from '../types/navigation';
 
-interface Errors {
-  name?: string;
-  unit?: string;
-  price?: string;
-  stock?: string;
-}
+const VALORES_INICIALES: MaterialFormInput = {
+  name: '',
+  category: CATEGORIAS[0],
+  unit: '',
+  price: '',
+  stock: '',
+  description: '',
+};
 
 export default function MaterialFormScreen({ navigation }: MaterialesStackScreenProps<'MaterialForm'>) {
-  const { addMaterial } = useMaterials();
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState<Categoria>(CATEGORIAS[0]);
-  const [unit, setUnit] = useState('');
-  const [price, setPrice] = useState('');
-  const [stock, setStock] = useState('');
-  const [description, setDescription] = useState('');
-  const [errors, setErrors] = useState<Errors>({});
+  const addMaterial = useMaterialsStore((s) => s.addMaterial);
+  const { control, handleSubmit } = useForm<MaterialFormInput, unknown, MaterialFormData>({
+    resolver: zodResolver(materialSchema),
+    defaultValues: VALORES_INICIALES,
+  });
 
-  const validate = (): Errors => {
-    const e: Errors = {};
-    if (name.trim().length < 3) e.name = 'Escribe un nombre de al menos 3 caracteres.';
-    if (unit.trim().length === 0) e.unit = 'Indica la unidad de venta (ej. caja x12).';
-    const p = Number(price);
-    if (!price || Number.isNaN(p) || p <= 0) e.price = 'Ingresa un precio mayor a 0.';
-    const s = Number(stock);
-    if (stock === '' || Number.isNaN(s) || s < 0 || !Number.isInteger(s)) e.stock = 'Ingresa una cantidad entera (0 o más).';
-    return e;
-  };
-
-  const onSubmit = () => {
-    const e = validate();
-    setErrors(e);
-    if (Object.keys(e).length > 0) return;
-
-    const nuevo = addMaterial({
-      name: name.trim(),
-      category,
-      unit: unit.trim(),
-      price: Number(price),
-      stock: Number(stock),
-      description: description.trim(),
-    });
+  const onSubmit = (data: MaterialFormData) => {
+    const nuevo = addMaterial(data);
     Alert.alert('Material guardado', `${nuevo.name} ya está en el catálogo.`, [
       { text: 'Aceptar', onPress: () => navigation.goBack() },
     ]);
@@ -59,33 +39,37 @@ export default function MaterialFormScreen({ navigation }: MaterialesStackScreen
   return (
     <KeyboardAvoidingView style={styles.screen} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <FormField label="Nombre" value={name} onChangeText={setName} placeholder="Ej. Tijeras punta roma" error={errors.name} />
+        <FormField control={control} name="name" label="Nombre" placeholder="Ej. Tijeras punta roma" />
 
-        <View style={styles.group}>
-          <Text style={styles.groupLabel}>Categoría</Text>
-          <View style={styles.chips}>
-            {CATEGORIAS.map((c) => (
-              <Chip key={c} label={c} selected={category === c} onPress={() => setCategory(c)} />
-            ))}
-          </View>
-        </View>
+        <Controller
+          control={control}
+          name="category"
+          render={({ field }) => (
+            <View style={styles.group}>
+              <Text style={styles.groupLabel}>Categoría</Text>
+              <View style={styles.chips}>
+                {CATEGORIAS.map((c) => (
+                  <Chip key={c} label={c} selected={field.value === c} onPress={() => field.onChange(c)} />
+                ))}
+              </View>
+            </View>
+          )}
+        />
 
-        <FormField label="Unidad de venta" value={unit} onChangeText={setUnit} placeholder="Ej. caja x12" error={errors.unit} />
-        <FormField label="Precio (COP)" value={price} onChangeText={setPrice} keyboardType="numeric" placeholder="Ej. 25000" error={errors.price} />
-        <FormField label="Stock inicial" value={stock} onChangeText={setStock} keyboardType="number-pad" placeholder="Ej. 40" error={errors.stock} />
+        <FormField control={control} name="unit" label="Unidad de venta" placeholder="Ej. caja x12" />
+        <FormField control={control} name="price" label="Precio (COP)" keyboardType="numeric" placeholder="Ej. 25000" />
+        <FormField control={control} name="stock" label="Stock inicial" keyboardType="number-pad" placeholder="Ej. 40" />
         <FormField
+          control={control}
+          name="description"
           label="Descripción (opcional)"
-          value={description}
-          onChangeText={setDescription}
           placeholder="Para qué se usa, edad recomendada…"
           multiline
           numberOfLines={3}
           style={styles.multiline}
         />
 
-        <Pressable style={({ pressed }) => [styles.button, pressed && { opacity: 0.85 }]} onPress={onSubmit} accessibilityRole="button">
-          <Text style={styles.buttonText}>Guardar material</Text>
-        </Pressable>
+        <SubmitButton label="Guardar material" onPress={handleSubmit(onSubmit)} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -98,6 +82,4 @@ const styles = StyleSheet.create({
   groupLabel: { fontSize: font.sm, fontWeight: '700', color: colors.ink },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
   multiline: { minHeight: 80, textAlignVertical: 'top' },
-  button: { backgroundColor: colors.accent, borderRadius: radius.md, paddingVertical: spacing.lg, alignItems: 'center' },
-  buttonText: { fontSize: font.lg, fontWeight: '800', color: colors.accentInk },
 });

@@ -46,7 +46,7 @@ export interface Nino {
   fechaNacimiento: string; // ISO yyyy-mm-dd
   grupoId: string;
   acudiente: string;
-  telefono: string; // solo dígitos con indicativo
+  telefono: string; // solo dígitos con indicativo, ej. 573005550101
   asistencia: Asistencia;
   nota?: string;
   foto?: ImageSourcePropType; // opcional: si falta, se muestra la inicial

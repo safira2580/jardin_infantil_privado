@@ -1,7 +1,7 @@
 // SEMANA 1: Core Components, Flexbox y StyleSheet (pantalla informativa).
 import { Ionicons } from '@expo/vector-icons';
 import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { colors, font, radius, spacing } from '../theme';
+import { blockCard, blocks, colors, font, radius, spacing, type BlockKey } from '../theme';
 
 interface Dato {
   icon: keyof typeof Ionicons.glyphMap;
@@ -16,6 +16,8 @@ const DATOS: Dato[] = [
   { icon: 'mail-outline', label: 'Correo', value: 'info@semillitas.example.com', url: 'mailto:info@semillitas.example.com' },
   { icon: 'time-outline', label: 'Horario', value: 'Lunes a viernes, 6:30 a. m. - 5:30 p. m.' },
 ];
+
+const TONOS: BlockKey[] = ['coral', 'sun', 'blue', 'green'];
 
 const SERVICIOS = ['Educación inicial', 'Ruta escolar', 'Alimentación balanceada', 'Extensión de jornada'];
 
@@ -48,9 +50,9 @@ export default function ContactoScreen() {
 
       <Text style={styles.sectionTitle}>Servicios</Text>
       <View style={styles.tags}>
-        {SERVICIOS.map((s) => (
-          <View key={s} style={styles.tag}>
-            <Text style={styles.tagText}>{s}</Text>
+        {SERVICIOS.map((s, i) => (
+          <View key={s} style={[styles.tag, { backgroundColor: blocks[TONOS[i % 4]].main, borderBottomColor: blocks[TONOS[i % 4]].dark }]}>
+            <Text style={[styles.tagText, { color: blocks[TONOS[i % 4]].onMain }]}>{s}</Text>
           </View>
         ))}
       </View>
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
   content: { padding: spacing.lg, gap: spacing.md },
   title: { fontSize: font.xxl, fontWeight: '800', color: colors.ink },
   subtitle: { fontSize: font.md, color: colors.muted, lineHeight: 22 },
-  card: { backgroundColor: colors.surface, borderRadius: radius.md, paddingHorizontal: spacing.lg, marginTop: spacing.sm },
+  card: { ...blockCard, paddingHorizontal: spacing.lg, marginTop: spacing.sm },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -76,8 +78,8 @@ const styles = StyleSheet.create({
   rowLabel: { fontSize: font.sm, color: colors.muted },
   rowValue: { fontSize: font.md, color: colors.ink, fontWeight: '600' },
   link: { color: colors.sky },
-  sectionTitle: { fontSize: font.lg, fontWeight: '700', color: colors.ink, marginTop: spacing.md },
+  sectionTitle: { fontSize: font.lg, fontWeight: '800', color: colors.ink, marginTop: spacing.md },
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
-  tag: { backgroundColor: colors.ink, paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderRadius: radius.sm },
-  tagText: { color: colors.surface, fontSize: font.sm, fontWeight: '600' },
+  tag: { paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, borderRadius: radius.pill, borderBottomWidth: 4 },
+  tagText: { fontSize: font.sm, fontWeight: '800' },
 });

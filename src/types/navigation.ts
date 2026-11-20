@@ -18,11 +18,19 @@ export type MaterialesStackParamList = {
   MaterialForm: undefined;
 };
 
+export type AvisosStackParamList = {
+  AvisosList: undefined;
+  AvisoDetail: { avisoId: number };
+  AvisoForm: undefined;
+  AvisoEdit: { avisoId: number };
+};
+
 export type RootTabParamList = {
   InicioTab: undefined;
   GruposTab: NavigatorScreenParams<GruposStackParamList>;
   NinosTab: NavigatorScreenParams<NinosStackParamList>;
   MaterialesTab: NavigatorScreenParams<MaterialesStackParamList>;
+  AvisosTab: NavigatorScreenParams<AvisosStackParamList>;
   ContactoTab: undefined;
 };
 
@@ -33,12 +41,17 @@ export type GruposStackScreenProps<T extends keyof GruposStackParamList> = Compo
   BottomTabScreenProps<RootTabParamList>
 >;
 
+export type MaterialesStackScreenProps<T extends keyof MaterialesStackParamList> = CompositeScreenProps<
+  NativeStackScreenProps<MaterialesStackParamList, T>,
+  BottomTabScreenProps<RootTabParamList>
+>;
+
 export type NinosStackScreenProps<T extends keyof NinosStackParamList> = CompositeScreenProps<
   NativeStackScreenProps<NinosStackParamList, T>,
   BottomTabScreenProps<RootTabParamList>
 >;
 
-export type MaterialesStackScreenProps<T extends keyof MaterialesStackParamList> = CompositeScreenProps<
-  NativeStackScreenProps<MaterialesStackParamList, T>,
+export type AvisosStackScreenProps<T extends keyof AvisosStackParamList> = CompositeScreenProps<
+  NativeStackScreenProps<AvisosStackParamList, T>,
   BottomTabScreenProps<RootTabParamList>
 >;

@@ -1,39 +1,39 @@
-# Jardín Infantil Semillitas - Semana 03: React Navigation 7
+# Jardín Infantil Semillitas - Semana 06: Formularios con React Hook Form + Zod
 
-Bootcamp React Native (bc-reactnative) - Dominio: **Jardín infantil privado** (grupos y material didáctico).
+Bootcamp React Native (bc-reactnative) - Dominio: **Jardín infantil privado**.
 
 ## Qué incluye esta semana
-- Todo lo de las semanas 1 y 2.
-- **Bottom Tabs** (Inicio, Grupos, Material, Contacto) con **Native Stack** anidado en Grupos y Material.
-- Detalle de grupo y de material con **parámetros tipados** (`grupoId`, `materialId`).
-- Navegación cruzada: desde un grupo al material que usa, y desde un material a los grupos que lo usan.
-- Formulario de nuevo material como pantalla **modal**.
+
+- Todo lo de las semanas 1 a 5.
+- **Zod**: `avisoSchema` y `materialSchema`, con `z.coerce.number()` en los campos numéricos.
+- **React Hook Form** + `zodResolver`: los formularios ya no usan `useState` ni validación manual.
+- **`FormField` genérico** (Controller + TextInput + mensaje de error), tipado sin `any`.
+- **Crear aviso**, **Editar aviso** (nuevo, con `useUpdateAviso`) y **Nuevo material** reutilizan `FormField`.
+- Botón con spinner y deshabilitado mientras se envía (`isSubmitting`).
 
 ## Archivos principales
-- `src/navigation/` (RootTabs, GruposStack, MaterialesStack)
-- `src/types/navigation.ts` (tipos de rutas)
-- `src/screens/GrupoDetailScreen.tsx`, `MaterialDetailScreen.tsx`
 
-## Cómo ejecutarlo
-```bash
-npm install
-npx expo install --fix
-npx expo start
+- `src/schemas/avisoSchema.ts`, `src/schemas/materialSchema.ts`
+- `src/components/FormField.tsx`, `AvisoForm.tsx`, `SubmitButton.tsx`
+- `src/screens/AvisoFormScreen.tsx` (crear), `AvisoEditScreen.tsx` (editar), `MaterialFormScreen.tsx`
+- `src/hooks/useAvisos.ts` (`useUpdateAviso`), `src/services/avisosService.ts` (`updateAviso`)
+
+## Cómo ejecutarlo (solo pnpm)
+
+```
+pnpm install
+# .env.local: EXPO_PUBLIC_API_URL=https://jsonplaceholder.typicode.com
+pnpm start
+pnpm exec tsc --noEmit
+pnpm lint
 ```
 
-## Mapa de navegación
-```
-RootTabs (Bottom Tabs)
-├── InicioTab       -> HomeScreen
-├── GruposTab       -> GruposStack
-│     ├── GruposList
-│     └── GrupoDetail     { grupoId: string }
-├── MaterialesTab   -> MaterialesStack
-│     ├── MaterialesList
-│     ├── MaterialDetail  { materialId: string }
-│     └── MaterialForm    (modal)
-└── ContactoTab     -> ContactoScreen
-```
+## Nota
+
+JSONPlaceholder simula los POST, PUT y DELETE sin guardar nada. Por eso las mutaciones actualizan
+el caché a mano (`setQueryData`) y usan `refetchType: 'none'`. Los avisos creados en la app (id mayor
+que 100) no existen en el servidor, así que al editarlos solo se actualiza el caché.
 
 ## Siguiente semana
-Semana 4: estado global con Zustand.
+
+Semana 7: persistencia local.

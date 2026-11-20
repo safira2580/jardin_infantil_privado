@@ -4,20 +4,15 @@ import { Pressable } from 'react-native';
 import MaterialDetailScreen from '../screens/MaterialDetailScreen';
 import MaterialFormScreen from '../screens/MaterialFormScreen';
 import MaterialesListScreen from '../screens/MaterialesListScreen';
-import { colors } from '../theme';
+import { blocks } from '../theme';
 import type { MaterialesStackParamList } from '../types/navigation';
+import { stackScreenOptions } from './screenOptions';
 
 const Stack = createNativeStackNavigator<MaterialesStackParamList>();
 
 export default function MaterialesStack() {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: colors.ink },
-        headerTintColor: colors.surface,
-        headerTitleStyle: { fontWeight: '700' },
-      }}
-    >
+    <Stack.Navigator screenOptions={stackScreenOptions}>
       <Stack.Screen
         name="MaterialesList"
         component={MaterialesListScreen}
@@ -30,7 +25,7 @@ export default function MaterialesStack() {
               accessibilityLabel="Agregar material"
               hitSlop={10}
             >
-              <Ionicons name="add-circle" size={28} color={colors.accent} />
+              <Ionicons name="add-circle" size={32} color={blocks.coral.main} />
             </Pressable>
           ),
         })}
