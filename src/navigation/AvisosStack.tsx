@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AvisoDetailScreen from '../screens/AvisoDetailScreen';
+import AvisoEditScreen from '../screens/AvisoEditScreen';
 import AvisoFormScreen from '../screens/AvisoFormScreen';
 import AvisosListScreen from '../screens/AvisosListScreen';
 import { colors } from '../theme';
@@ -23,6 +24,11 @@ export default function AvisosStack() {
         name="AvisoForm"
         component={AvisoFormScreen}
         options={{ title: 'Nuevo aviso', presentation: 'modal' }}
+      />
+      <Stack.Screen
+        name="AvisoEdit"
+        component={AvisoEditScreen}
+        options={{ title: 'Editar aviso', presentation: 'modal' }}
       />
     </Stack.Navigator>
   );

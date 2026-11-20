@@ -57,6 +57,11 @@ export default function AvisoDetailScreen({ navigation, route }: AvisosStackScre
         <Text style={styles.buttonText}>{esFavorito ? 'Quitar de favoritos' : 'Marcar como favorito'}</Text>
       </Pressable>
 
+      <Pressable style={[styles.button, styles.edit]} onPress={() => navigation.navigate('AvisoEdit', { avisoId })}>
+        <Ionicons name="create-outline" size={20} color="#FFFFFF" />
+        <Text style={styles.buttonText}>Editar aviso</Text>
+      </Pressable>
+
       <Pressable style={[styles.button, styles.danger]} onPress={confirmarEliminar} disabled={eliminar.isPending}>
         <Ionicons name="trash-outline" size={20} color="#FFFFFF" />
         <Text style={styles.buttonText}>{eliminar.isPending ? 'Eliminando...' : 'Eliminar aviso'}</Text>
@@ -82,6 +87,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingVertical: spacing.md,
   },
+  edit: { backgroundColor: blocks.green.main },
   danger: { backgroundColor: '#D64545' },
   buttonText: { color: '#FFFFFF', fontWeight: '800', fontSize: 15 },
   error: { color: '#D64545', fontWeight: '700' },

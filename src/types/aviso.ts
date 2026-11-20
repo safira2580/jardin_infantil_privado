@@ -5,4 +5,4 @@ export interface Aviso {
   autorId: number;
 }
 
-export type NuevoAviso = Pick<Aviso, 'titulo' | 'mensaje'>;
+export type NuevoAviso = Pick<Aviso, 'titulo' | 'mensaje' | 'autorId'>;

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createAviso, deleteAviso, fetchAvisoById, fetchAvisos } from '../services/avisosService';
+import { createAviso, deleteAviso, fetchAvisoById, fetchAvisos, updateAviso } from '../services/avisosService';
 import type { Aviso } from '../types/aviso';
 
 export const avisosKeys = {
@@ -30,6 +30,22 @@ export function useCreateAviso() {
       // JSONPlaceholder responde siempre id 101: se usa un id único para la UI
       const nuevo: Aviso = { ...creado, id: Date.now() };
       queryClient.setQueryData<Aviso[]>(avisosKeys.all, (prev) => [nuevo, ...(prev ?? [])]);
+      // refetchType 'none': JSONPlaceholder no persiste cambios; con un backend real se quita.
+      queryClient.invalidateQueries({ queryKey: avisosKeys.all, refetchType: 'none' });
+    },
+  });
+}
+
+// SEMANA 6: actualizar un aviso (formulario de edición).
+export function useUpdateAviso() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateAviso,
+    onSuccess: (actualizado) => {
+      queryClient.setQueryData<Aviso[]>(avisosKeys.all, (prev) =>
+        (prev ?? []).map((a) => (a.id === actualizado.id ? actualizado : a)),
+      );
+      queryClient.setQueryData<Aviso>(avisosKeys.detail(actualizado.id), actualizado);
       // refetchType 'none': JSONPlaceholder no persiste cambios; con un backend real se quita.
       queryClient.invalidateQueries({ queryKey: avisosKeys.all, refetchType: 'none' });
     },

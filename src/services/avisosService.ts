@@ -30,7 +30,22 @@ export async function createAviso(payload: NuevoAviso): Promise<Aviso> {
   const { data } = await apiClient.post<PostDto>('/posts', {
     title: payload.titulo,
     body: payload.mensaje,
-    userId: 1,
+    userId: payload.autorId,
+  });
+  return toAviso(data);
+}
+
+/** JSONPlaceholder solo tiene los posts 1 a 100; los avisos creados en la app usan ids mayores. */
+const MAX_POST_ID = 100;
+
+export async function updateAviso(aviso: Aviso): Promise<Aviso> {
+  // Un aviso creado en la app no existe en el servidor: se actualiza solo en la caché.
+  if (aviso.id > MAX_POST_ID) return aviso;
+  const { data } = await apiClient.put<PostDto>(`/posts/${aviso.id}`, {
+    id: aviso.id,
+    title: aviso.titulo,
+    body: aviso.mensaje,
+    userId: aviso.autorId,
   });
   return toAviso(data);
 }
