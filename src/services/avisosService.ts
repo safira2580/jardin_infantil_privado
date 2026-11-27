@@ -44,7 +44,7 @@ export async function createAviso(payload: NuevoAviso): Promise<Aviso> {
 }
 
 /** JSONPlaceholder solo tiene los posts 1 a 100; los avisos creados en la app usan ids mayores. */
-const MAX_POST_ID = 100;
+export const MAX_POST_ID = 100;
 
 export async function updateAviso(aviso: Aviso): Promise<Aviso> {
   // Un aviso creado en la app no existe en el servidor: se actualiza solo en la caché.

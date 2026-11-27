@@ -1,8 +1,16 @@
-# Jardín Infantil Semillitas - Semana 06: Formularios con React Hook Form + Zod
+# Jardín Infantil Semillitas - Semana 07: Persistencia local
 
 Bootcamp React Native (bc-reactnative) - Dominio: **Jardín infantil privado**.
 
 ## Qué incluye esta semana
+
+- **MMKV**: preferencias de la lista de avisos (orden, modo compacto, avisos por página).
+- **AsyncStorage**: copia local de los avisos para verlos sin internet (con banner de "sin conexión").
+- **SecureStore**: PIN de la dirección guardado cifrado.
+- Pantalla **Ajustes** (engranaje en la pestaña Avisos) y avisos de ejemplo en español.
+- Detalle y pasos en `docs/semana-07-persistencia.md`.
+
+## De la semana 6
 
 - Todo lo de las semanas 1 a 5.
 - **Zod**: `avisoSchema` y `materialSchema`, con `z.coerce.number()` en los campos numéricos.
@@ -20,10 +28,12 @@ Bootcamp React Native (bc-reactnative) - Dominio: **Jardín infantil privado**.
 
 ## Cómo ejecutarlo (solo pnpm)
 
+MMKV necesita código nativo, así que esta semana **no funciona con Expo Go**: hay que generar una
+development build.
+
 ```
 pnpm install
-# .env.local: EXPO_PUBLIC_API_URL=https://jsonplaceholder.typicode.com
-pnpm start
+pnpm expo run:android      # Android Studio + SDK de Android + JDK 17
 pnpm exec tsc --noEmit
 pnpm lint
 ```
@@ -36,4 +46,4 @@ que 100) no existen en el servidor, así que al editarlos solo se actualiza el c
 
 ## Siguiente semana
 
-Semana 7: persistencia local.
+Semana 8: autenticación.

@@ -23,6 +23,7 @@ export type AvisosStackParamList = {
   AvisoDetail: { avisoId: number };
   AvisoForm: undefined;
   AvisoEdit: { avisoId: number };
+  Ajustes: undefined;
 };
 
 export type RootTabParamList = {
