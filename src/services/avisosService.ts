@@ -1,4 +1,5 @@
 import { apiClient } from './api';
+import { AVISOS_ES } from '../data/avisosEs';
 import type { Aviso, NuevoAviso } from '../types/aviso';
 
 // Forma que devuelve la API (JSONPlaceholder /posts)
@@ -16,14 +17,21 @@ const toAviso = (p: PostDto): Aviso => ({
   autorId: p.userId,
 });
 
+// Solo en las LECTURAS (GET) se reemplaza el texto en latín de la API por el aviso en español.
+// En POST/PUT se usa toAviso tal cual, para no pisar lo que la persona escribió.
+const toAvisoEs = (p: PostDto): Aviso => {
+  const es = AVISOS_ES[p.id];
+  return { ...toAviso(p), titulo: es?.titulo ?? p.title, mensaje: es?.mensaje ?? p.body };
+};
+
 export async function fetchAvisos(): Promise<Aviso[]> {
   const { data } = await apiClient.get<PostDto[]>('/posts', { params: { _limit: 20 } });
-  return data.map(toAviso);
+  return data.map(toAvisoEs);
 }
 
 export async function fetchAvisoById(id: number): Promise<Aviso> {
   const { data } = await apiClient.get<PostDto>(`/posts/${id}`);
-  return toAviso(data);
+  return toAvisoEs(data);
 }
 
 export async function createAviso(payload: NuevoAviso): Promise<Aviso> {
